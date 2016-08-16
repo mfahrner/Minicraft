@@ -20,6 +20,11 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	static final float MAX_VELOCITY = 250;
 
+	boolean faceUp;
+	boolean faceDown;
+	boolean faceLeft;
+	boolean faceRight;
+
 
 	@Override
 	public void create () {
@@ -43,27 +48,30 @@ public class MyGdxGame extends ApplicationAdapter {
 		if (y > Gdx.graphics.getHeight()) {
 			y = 0;
 		}
-		if (y < -48) {
+		if (y < -DRAW_HEIGHT) {
 			y = Gdx.graphics.getHeight();
 		}
 		if (x > Gdx.graphics.getWidth()) {
 			x = 0;
 		}
-		if (x < -40) {
+		if (x < -DRAW_WIDTH) {
 			x = Gdx.graphics.getWidth();
 		}
 
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 		batch.begin();
+
 		batch.draw(right, x, y, DRAW_WIDTH, DRAW_HEIGHT);
-		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+
+		if (faceUp) {
 			batch.draw(up, x, y, DRAW_WIDTH, DRAW_HEIGHT);
-		}else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+		}else if (faceDown) {
 			batch.draw(down, x, y, DRAW_WIDTH, DRAW_HEIGHT);
-		}else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+		}else if (faceRight) {
 			batch.draw(right, x, y, DRAW_WIDTH, DRAW_HEIGHT);
-		}else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+		}else if (faceLeft) {
 			batch.draw(left, x, y, DRAW_WIDTH, DRAW_HEIGHT);
 		}
 			batch.end();
@@ -85,24 +93,40 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	void move() {
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+			faceUp = true;
+			faceDown = false;
+			faceRight = false;
+			faceLeft = false;
 			y++;
 			if (Gdx.input.isKeyPressed(Input.Keys.UP) && (Gdx.input.isKeyPressed(Input.Keys.SPACE))) {
 				yv = MAX_VELOCITY;
 			}
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+			faceUp = false;
+			faceDown = true;
+			faceRight = false;
+			faceLeft = false;
 			y--;
 			if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && (Gdx.input.isKeyPressed(Input.Keys.SPACE))) {
 				yv = MAX_VELOCITY * -1;
 			}
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+			faceUp = false;
+			faceDown = false;
+			faceRight = true;
+			faceLeft = false;
 			x++;
 			if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && (Gdx.input.isKeyPressed(Input.Keys.SPACE))) {
 				xv = MAX_VELOCITY;
 			}
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+			faceUp = false;
+			faceDown = false;
+			faceRight = false;
+			faceLeft = true;
 			x--;
 			if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && (Gdx.input.isKeyPressed(Input.Keys.SPACE))) {
 				xv = MAX_VELOCITY * -1;
