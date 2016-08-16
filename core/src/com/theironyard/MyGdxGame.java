@@ -39,17 +39,18 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void render () {
 
 		move();
-		if (y > 475) {
+
+		if (y > Gdx.graphics.getHeight()) {
 			y = 0;
 		}
-		if (y < -45) {
-			y = 430;
+		if (y < -48) {
+			y = Gdx.graphics.getHeight();
 		}
-		if (x > 630) {
+		if (x > Gdx.graphics.getWidth()) {
 			x = 0;
 		}
 		if (x < -40) {
-			x = 600;
+			x = Gdx.graphics.getWidth();
 		}
 
 		Gdx.gl.glClearColor(1, 0, 0, 1);
