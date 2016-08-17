@@ -36,8 +36,6 @@ public class MyGdxGame extends ApplicationAdapter {
 		right = grid[6][3];
 		left = new TextureRegion(right);
 		left.flip(true, false);
-
-
 	}
 
 	@Override
@@ -45,18 +43,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		move();
 
-		if (y > Gdx.graphics.getHeight()) {
-			y = 0;
-		}
-		if (y < -DRAW_HEIGHT) {
-			y = Gdx.graphics.getHeight();
-		}
-		if (x > Gdx.graphics.getWidth()) {
-			x = 0;
-		}
-		if (x < -DRAW_WIDTH) {
-			x = Gdx.graphics.getWidth();
-		}
+		setBoundry();
 
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -65,16 +52,9 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		batch.draw(right, x, y, DRAW_WIDTH, DRAW_HEIGHT);
 
-		if (faceUp) {
-			batch.draw(up, x, y, DRAW_WIDTH, DRAW_HEIGHT);
-		}else if (faceDown) {
-			batch.draw(down, x, y, DRAW_WIDTH, DRAW_HEIGHT);
-		}else if (faceRight) {
-			batch.draw(right, x, y, DRAW_WIDTH, DRAW_HEIGHT);
-		}else if (faceLeft) {
-			batch.draw(left, x, y, DRAW_WIDTH, DRAW_HEIGHT);
-		}
-			batch.end();
+		setFace();
+		
+		batch.end();
 	}
 	
 	@Override
@@ -83,7 +63,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	}
 
 	float decelerate(float velocity) {
-		float deceleration = 0.95f; // the closer to 1, the slower the deceleration
+		float deceleration = 0.95f;
 		velocity *= deceleration;
 		if (Math.abs(velocity) < 1) {
 			velocity = 0;
@@ -98,36 +78,43 @@ public class MyGdxGame extends ApplicationAdapter {
 			faceRight = false;
 			faceLeft = false;
 			y++;
+
 			if (Gdx.input.isKeyPressed(Input.Keys.UP) && (Gdx.input.isKeyPressed(Input.Keys.SPACE))) {
 				yv = MAX_VELOCITY;
 			}
 		}
+
 		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 			faceUp = false;
 			faceDown = true;
 			faceRight = false;
 			faceLeft = false;
 			y--;
+
 			if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && (Gdx.input.isKeyPressed(Input.Keys.SPACE))) {
 				yv = MAX_VELOCITY * -1;
 			}
 		}
+
 		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
 			faceUp = false;
 			faceDown = false;
 			faceRight = true;
 			faceLeft = false;
 			x++;
+
 			if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && (Gdx.input.isKeyPressed(Input.Keys.SPACE))) {
 				xv = MAX_VELOCITY;
 			}
 		}
+
 		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 			faceUp = false;
 			faceDown = false;
 			faceRight = false;
 			faceLeft = true;
 			x--;
+
 			if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && (Gdx.input.isKeyPressed(Input.Keys.SPACE))) {
 				xv = MAX_VELOCITY * -1;
 			}
@@ -138,5 +125,38 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		yv = decelerate(yv);
 		xv = decelerate(xv);
+	}
+
+	void setFace() {
+		if (faceUp) {
+			batch.draw(up, x, y, DRAW_WIDTH, DRAW_HEIGHT);
+
+		}else if (faceDown) {
+			batch.draw(down, x, y, DRAW_WIDTH, DRAW_HEIGHT);
+
+		}else if (faceRight) {
+			batch.draw(right, x, y, DRAW_WIDTH, DRAW_HEIGHT);
+
+		}else if (faceLeft) {
+			batch.draw(left, x, y, DRAW_WIDTH, DRAW_HEIGHT);
+		}
+	}
+
+	void setBoundry() {
+		if (y > Gdx.graphics.getHeight()) {
+			y = 0;
+		}
+
+		if (y < -DRAW_HEIGHT) {
+			y = Gdx.graphics.getHeight();
+		}
+
+		if (x > Gdx.graphics.getWidth()) {
+			x = 0;
+		}
+
+		if (x < -DRAW_WIDTH) {
+			x = Gdx.graphics.getWidth();
+		}
 	}
 }
